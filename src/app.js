@@ -2,6 +2,8 @@
 import SearchForm from './search_form.js';
 import ListingsList from './listings_list.js';
 
+// TODO(madeeha): the frontend could be much prettier and allow searching along way more parameters
+
 class App extends React.Component {
   constructor(props) {
     super(props);

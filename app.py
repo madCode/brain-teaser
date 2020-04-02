@@ -7,7 +7,11 @@ from listings_manager import ListingsManager
 from results_manager import ResultsManager
 PORT = 9090
 
+"""
+This class loads the right html file and handles all requests.
 
+TODO(madeeha): write tests
+"""
 class AppHandler(server.SimpleHTTPRequestHandler):
 
     def __init__(self, request, client_address, server):
@@ -15,13 +19,15 @@ class AppHandler(server.SimpleHTTPRequestHandler):
         self.parsed_params = {}
 
     def are_params_valid(self, params):
+        # TODO(madeeha): in the future, we should be able to return info on exactly what was wrong with the request
         try:
             self.parsed_params['distance'] = int(params['distance'][0])
             self.parsed_params['distance_format'] = params['distanceFormat'][0]
             self.parsed_params['latitude'] = float(params['latitude'][0])
             self.parsed_params['longitude'] = float(params['longitude'][0])
             self.parsed_params['query'] = params['query'][0]
-        except:
+        except TypeError:
+            # TODO(madeeha): Double-check that this is the right error that gets thrown
             return False
         return (self.parsed_params['distance_format'] == 'km' or
                 self.parsed_params['distance_format'] == 'mi' and len(params) > 0)
@@ -34,7 +40,6 @@ class AppHandler(server.SimpleHTTPRequestHandler):
             if not are_params_valid:
                 self.send_error(400, "Bad request. Check parameter types and length")
                 return
-            
             listings_manager = ListingsManager(self.parsed_params['distance'], self.parsed_params['distance_format'],
                                                self.parsed_params['latitude'],  self.parsed_params['longitude'])
             results_manager = ResultsManager(listings_manager.get_listings_within_distance())

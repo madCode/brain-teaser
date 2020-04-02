@@ -11,6 +11,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import SearchForm from './search_form.js';
 import ListingsList from './listings_list.js';
 
+// TODO(madeeha): the frontend could be much prettier and allow searching along way more parameters
+
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
 
