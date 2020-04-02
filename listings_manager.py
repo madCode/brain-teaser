@@ -42,9 +42,10 @@ class ListingsManager:
 
         # TODO(madeeha): this part of the code is hard to debug.
         #  Consider breaking this function and query creation up a bit
-        query_string = "SELECT * FROM listings WHERE (latitude >= {min_lat} AND latitude <= {max_lat}) AND " \
+        query_string = "SELECT *, DISTANCE(latitude, longitude, {search_lat}, {search_lon}) as distance" \
+                       " FROM listings WHERE (latitude >= {min_lat} AND latitude <= {max_lat}) AND " \
                        "(longitude >= {min_lon} AND longitude <= {max_lon}) AND " \
-                       "DISTANCE(latitude, longitude, {search_lat}, {search_lon}) <= {search_radius};"
+                       "distance <= {search_radius} ORDER BY distance DESC;"
         formatted_query = query_string.format(min_lat=min_lat, max_lat=max_lat, min_lon=min_lon, max_lon=max_lon,
                                               search_lat=search_lat_radians, search_lon=search_lon_radians,
                                               search_radius=search_radius)
@@ -88,8 +89,9 @@ class ListingsManager:
         # TODO(madeeha): ideally we'd want to return some kind of object instead of a dictionary
         keys = ['index', 'id', 'title', 'host_id', 'host_name', 'neighborhood_group', 'neighborhood', 'latitude',
                 'longitude', 'room_type', 'price', 'minimum_nights', 'number_of_reviews', 'last_review',
-                'reviews_per_month', 'host_listing_count', 'days_available_count']
+                'reviews_per_month', 'host_listing_count', 'days_available_count', 'distance']
         if len(result_tuple) != len(keys):
+            print("List of keys not the same length as result")
             return {}
         else:
             return {keys[i]: result_tuple[i] for i in range(len(keys))}

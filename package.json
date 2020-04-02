@@ -1,0 +1,27 @@
+{
+  "name": "brain-teaser",
+  "version": "1.0.0",
+  "description": "##Packages needed: - [nltk](https://www.nltk.org/install.html) - sqlite3     - should already be installed with python - SimpleHTTPServer     - preinstalled on Macs, can be installed on Windows",
+  "main": "src/listings_search.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madCode/brain-teaser.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madCode/brain-teaser/issues"
+  },
+  "homepage": "https://github.com/madCode/brain-teaser#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2"
+  }
+}
