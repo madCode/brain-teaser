@@ -10,15 +10,35 @@ PORT = 9090
 
 class AppHandler(server.SimpleHTTPRequestHandler):
 
+    def __init__(self, request, client_address, server):
+        super().__init__(request, client_address, server)
+        self.parsed_params = {}
+
+    def are_params_valid(self, params):
+        try:
+            self.parsed_params['distance'] = int(params['distance'][0])
+            self.parsed_params['distance_format'] = params['distanceFormat'][0]
+            self.parsed_params['latitude'] = float(params['latitude'][0])
+            self.parsed_params['longitude'] = float(params['longitude'][0])
+            self.parsed_params['query'] = params['query'][0]
+        except:
+            return False
+        return (self.parsed_params['distance_format'] == 'km' or
+                self.parsed_params['distance_format'] == 'mi' and len(params) > 0)
+
     def do_GET(self):
         if re.search('/api/search/*', self.path) is not None:
             parsed = urllib.parse.urlparse(self.path)
             query_parms = urllib.parse.parse_qs(parsed.query)
-            # check types for everything
-            listings_manager = ListingsManager(int(query_parms['distance'][0]), query_parms['distanceFormat'][0],
-                                               float(query_parms['latitude'][0]), float(query_parms['longitude'][0]))
+            are_params_valid = self.are_params_valid(query_parms)
+            if not are_params_valid:
+                self.send_error(400, "Bad request. Check parameter types and length")
+                return
+            
+            listings_manager = ListingsManager(self.parsed_params['distance'], self.parsed_params['distance_format'],
+                                               self.parsed_params['latitude'],  self.parsed_params['longitude'])
             results_manager = ResultsManager(listings_manager.get_listings_within_distance())
-            results = results_manager.get_top_results(query_parms['query'][0], 10)
+            results = results_manager.get_top_results(self.parsed_params['query'], 10)
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()

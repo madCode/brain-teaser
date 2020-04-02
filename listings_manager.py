@@ -1,9 +1,14 @@
+"""
+This class takes in distance-based search information and queries the database to get all listings within a given radius
+of a starting point. The results are ordered by distance, descending.
+
+distance calculations adapted from:
+    - http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
+"""
 import math
 import sqlite3
 
 EARTH_RADIUS_KM = 3958.8
-
-# TODO(madeeha): documentation on class
 
 
 class ListingsManager:

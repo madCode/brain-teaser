@@ -1,63 +1,6 @@
-"""A Basic Search API
-Create an api where requests can be made to find a room to rent. It’s up to you whether this uses a relational database,
-a NOSQL datastore, a search platform, or something custom. You can use whatever technology you feel is most appropriate
-- we primarily use Python (werkzeug) for services. If you do not have time to finish an entire application, focus on
-what you think is most important. We know you’re busy and appreciate that you’re spending time on this. Data which must
-be parsed and imported often has subtle problems in formatting or serialization, and the one we are providing to you
-is no exception.
-
-What should the application do?
-
-There should be an api endpoint for finding a room to rent. The provided CSV file has thousands of rentals from the NYC
-area. The response from the API should be a structured list of data about the rooms that match an api request containing
-a search string, and a latitude/longitude and a distance in meters (both search string and location information are
-optional). What does ‘match’ mean exactly? For the location part of the request, it should be the rooms within that
-distance from the provided location. How the text part of the query works is totally up to you, feel free to do something
-creative. You should try to always return some results, and order them in a way that is somewhat useful for a user.
-Example queries that might be posted to the api:
-{‘latitude’: 40.7306, ‘longitude’: -73.9352, distance: 1000, query: “two bedroom”}
-{‘latitude’: 41, ‘longitude’: -73, distance: 300.7, query: “near the empire state building”}
-
-
-Data:
-- load csv
-- parse data into database
-
-Api:
-- take in request
-- parse request to get location and distance
-- figure out min latitude and min longitude
-- calculate distances between them
-- cut out stuff that's further away
-- do a string search of:
-name, host_name, neighbourhood_group, neighbourhood, room_type
-
-id
-name
-host_id
-host_name
-neighbourhood_group
-neighbourhood
-latitude
-longitude
-room_type
-price
-minimum_nights
-number_of_reviews
-last_review
-reviews_per_month
-calculated_host_listings_count
-availability_365
-
-
-you connect to it with the sqlite3 connector in python
-6m
-and then just export a table from pandas to that database
-(pd.read_csv)
-df.to_sql()
-
-references:
-    - http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
+"""
+This class takes in a list of Result dictionaries, sorts them based on the search query passed in,
+and returns the top X number of results.
 """
 import string
 import nltk
